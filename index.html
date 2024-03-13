@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Mobius Strip</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gurajada&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="time-container"></div>
+    <div id="message-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create a Mobius strip geometry with ends attached seamlessly and larger size
+        const mobiusStripGeometry = new THREE.ParametricGeometry((u, v, target) => {
+        // Time variable for animation
+        const time = Date.now() * 0.001;
+        // Adjust the parametric equation to create a Mobius strip with seamless ends
+        u = u * Math.PI * 2;
+        v -= 0.5;
+        // Scale factors for x, y, and z coordinates to make the strip larger
+        const scale = 3; // Adjust as needed
+        const x = scale * Math.cos(u) * (1 + 0.5 * v * Math.cos(u / 2));
+        const y = scale * Math.sin(u) * (1 + 0.5 * v * Math.cos(u / 2));
+        const z = scale * 0.5 * v * Math.sin(u / 2);
+        target.set(x, y, z);
+        }, 100, 100);
+
+        const material = new THREE.MeshNormalMaterial({ side: THREE.DoubleSide });
+        
+        const mobiusStripMesh = new THREE.Mesh(mobiusStripGeometry, material);
+        scene.add(mobiusStripMesh);
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            mobiusStripMesh.rotation.x += 0.002;
+            mobiusStripMesh.rotation.y += 0.002;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        window.addEventListener('resize', onWindowResize);
+
+        // Function to update time and date
+        function updateTime() {
+            const date = new Date();
+            const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+            const time = date.toLocaleTimeString("en-US", timeOptions);
+            const dateFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+            const formattedDate = new Intl.DateTimeFormat("en-US", dateFormatOptions).format(date);
+            document.getElementById("time-container").innerHTML = `Time: ${time}<br>Date: ${formattedDate}`;
+        }
+
+        // Update time every second
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        const today = new Date();
+        const day = today.getDay();    
+
+        let type = "a weekday.";
+        let advice = "It's time to work hard! 💪🏽";
+
+        // From function getDay() 0 = Sun, 6 = Sat... change message using if statement
+        if (day === 0 || day === 6) {
+            type = "the weekend.";
+            advice = "Time to relax and recharge! 😌😴";
+        }
+        else if (day === 1) {
+            type = "Monday.";
+            advice = "Let's do numbers! Sock it to me! 🔢💸";
+        }
+        else if (day === 5) {
+            type = "Friday... finally!";
+            advice = "Food, chill, Soju & gaming! 🍚🍶🎮";
+        }
+        document.getElementById("message-container").innerHTML = `Today is ${type} ${advice}`;
+    </script>
+</body>
+</html>
