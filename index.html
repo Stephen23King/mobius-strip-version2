@@ -12,18 +12,7 @@
 </head>
 <body>
     <div id="time-container"></div>
-    <div id="message-container"></div>  
-        <div class="weather-container">
-            <div id="weather-info">
-            <div class="weather-details"><span id="city">Oshawa, ON</span><!-- Change city based on API -->
-                <div id="weather-text"></div>
-                <div id="temperature"></div>
-                <div id="humidity"></div>
-                <div id="wind"></div>
-            </div>
-        </div>
-    </div>
-
+    <div id="message-container"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         const scene = new THREE.Scene();
@@ -103,47 +92,6 @@
             advice = "Food, chill, Soju & gaming! 🍚🍶🎮";
         }
         document.getElementById("message-container").innerHTML = `Today is ${type} ${advice}`;
-
-        // Function to get weather data from API
-        function fetchWeatherData() {
-        // API endpoint URL
-        const apiKey = "ce510a0cf5a54a9098f192802241403";
-        const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Oshawa`;
-
-        // Fetch data from the API
-        fetch(apiUrl)
-            .then(response => {
-                // Check if the request was successful
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // Parse the JSON response
-                return response.json();
-            })
-            .then(data => {
-                // Handle the retrieved weather data
-                console.log(data);
-                const weather = data.current.condition.text;
-                const temperature = data.current.temp_c;
-                const humidity = data.current.humidity;
-                const wind = data.current.wind_mph;
-                
-                // Display the weather information (add/remove as needed)
-                document.getElementById("weather-text").textContent = `Weather: ${weather}`;
-                document.getElementById("temperature").textContent = `Temperature: ${temperature}°C`;
-                document.getElementById("humidity").textContent = `Humidity: ${humidity}%`;
-                document.getElementById("wind").textContent = `Wind: ${wind} mph`;
-                
-                console.log(weather, + " " + temperature, + " " + humidity, + " " + wind);
-            })
-            .catch(error => {
-                // Handle any errors
-                console.error('There was a problem with the fetch operation:', error);
-            });
-        }
-        // Call the function to fetch weather data
-        fetchWeatherData();
-
     </script>
 </body>
 </html>

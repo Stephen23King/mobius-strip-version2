@@ -50,27 +50,3 @@ canvas {
     margin-bottom: 7px;
     text-shadow: 0px 0px 4px rgb(0, 0, 0);
 }
-
-#weather-info {
-    position: absolute;
-    bottom: 20px;
-    left: 15px;
-    color: white;
-    font-size: 23px;
-    font-family: "Gurajada", sans-serif;
-    border-radius: 5px;
-    z-index: 1;
-    margin-left: 10px;
-    margin-bottom: 7px;
-    text-shadow: 0px 0px 4px rgb(0, 0, 0);
-    padding: 12px 20px 12px 20px;
-    border: 0px solid #ccc;
-    border-radius: 30px;
-    background: linear-gradient(90deg, #000835c5, #0da2c700);
-    line-height: 0.9;
-    letter-spacing: 0.5px;
-}
-
-#city {
-    font-size: 30px;
-}
